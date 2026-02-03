@@ -4,6 +4,7 @@ import { Scaffolder } from '../scaffolding';
 import { TypeGenerator } from '../codegen';
 import { SchemaValidator } from '../validation';
 import { TestRunner, TestGenerator } from '../testing';
+import { DashboardPanel } from '../webview';
 
 export function registerCommands(
     context: vscode.ExtensionContext,
@@ -245,7 +246,7 @@ export function registerCommands(
             id: 'mcp-app-builder.openDashboard',
             handler: async () => {
                 logger.info('Command: Open Dashboard');
-                vscode.window.showInformationMessage('MCP: Dashboard - Coming soon');
+                DashboardPanel.createOrShow(context.extensionUri, logger);
             },
         },
     ];
