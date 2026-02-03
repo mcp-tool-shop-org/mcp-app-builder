@@ -3,6 +3,7 @@ import { OutputChannelLogger } from '../utils/logger';
 import { Scaffolder } from '../scaffolding';
 import { TypeGenerator } from '../codegen';
 import { SchemaValidator } from '../validation';
+import { TestRunner, TestGenerator } from '../testing';
 
 export function registerCommands(
     context: vscode.ExtensionContext,
@@ -11,6 +12,8 @@ export function registerCommands(
     const scaffolder = new Scaffolder(logger);
     const typeGenerator = new TypeGenerator(logger);
     const schemaValidator = new SchemaValidator(logger);
+    const testRunner = new TestRunner(logger);
+    const testGenerator = new TestGenerator();
 
     const commands: Array<{ id: string; handler: () => Promise<void> }> = [
         {
@@ -168,7 +171,74 @@ export function registerCommands(
             id: 'mcp-app-builder.testServer',
             handler: async () => {
                 logger.info('Command: Test Server');
-                vscode.window.showInformationMessage('MCP: Test Server - Coming soon');
+
+                // Find mcp-tools.json and mcp.json
+                const workspaceFolders = vscode.workspace.workspaceFolders;
+                if (!workspaceFolders) {
+                    vscode.window.showWarningMessage('No workspace folder open');
+                    return;
+                }
+
+                const toolsFiles = await vscode.workspace.findFiles(
+                    '**/mcp-tools.json',
+                    '**/node_modules/**'
+                );
+
+                const configFiles = await vscode.workspace.findFiles(
+                    '**/mcp.json',
+                    '**/node_modules/**'
+                );
+
+                if (toolsFiles.length === 0) {
+                    vscode.window.showWarningMessage('No mcp-tools.json found');
+                    return;
+                }
+
+                try {
+                    // Load tools
+                    const toolsContent = await vscode.workspace.fs.readFile(toolsFiles[0]);
+                    const toolsData = JSON.parse(Buffer.from(toolsContent).toString('utf-8'));
+
+                    // Load config (optional)
+                    let configData = { name: 'mcp-server', version: '0.1.0' };
+                    if (configFiles.length > 0) {
+                        const configContent = await vscode.workspace.fs.readFile(configFiles[0]);
+                        configData = JSON.parse(Buffer.from(configContent).toString('utf-8'));
+                    }
+
+                    // Generate tests from tool definitions
+                    const tests = testGenerator.generateFromTools(toolsData.tools || []);
+
+                    if (tests.length === 0) {
+                        vscode.window.showWarningMessage('No tools found to test');
+                        return;
+                    }
+
+                    // Run tests
+                    const result = await vscode.window.withProgress(
+                        {
+                            location: vscode.ProgressLocation.Notification,
+                            title: 'Running MCP Tests',
+                            cancellable: false,
+                        },
+                        async () => {
+                            return await testRunner.runTests(tests, configData);
+                        }
+                    );
+
+                    if (result.failed === 0) {
+                        vscode.window.showInformationMessage(
+                            `All ${result.passed} tests passed`
+                        );
+                    } else {
+                        vscode.window.showWarningMessage(
+                            `${result.passed} passed, ${result.failed} failed`
+                        );
+                    }
+                } catch (error) {
+                    const message = error instanceof Error ? error.message : String(error);
+                    vscode.window.showErrorMessage(`Test failed: ${message}`);
+                }
             },
         },
         {
