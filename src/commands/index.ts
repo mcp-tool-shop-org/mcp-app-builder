@@ -1,12 +1,16 @@
 import * as vscode from 'vscode';
 import { OutputChannelLogger } from '../utils/logger';
 import { Scaffolder } from '../scaffolding';
+import { TypeGenerator } from '../codegen';
+import { SchemaValidator } from '../validation';
 
 export function registerCommands(
     context: vscode.ExtensionContext,
     logger: OutputChannelLogger
 ): void {
     const scaffolder = new Scaffolder(logger);
+    const typeGenerator = new TypeGenerator(logger);
+    const schemaValidator = new SchemaValidator(logger);
 
     const commands: Array<{ id: string; handler: () => Promise<void> }> = [
         {
@@ -62,14 +66,102 @@ export function registerCommands(
             id: 'mcp-app-builder.validateSchema',
             handler: async () => {
                 logger.info('Command: Validate Schema');
-                vscode.window.showInformationMessage('MCP: Validate Schema - Coming soon');
+
+                const editor = vscode.window.activeTextEditor;
+                if (!editor) {
+                    vscode.window.showWarningMessage('No active editor');
+                    return;
+                }
+
+                const document = editor.document;
+                const result = await schemaValidator.validateDocument(document);
+
+                if (result.valid) {
+                    vscode.window.showInformationMessage('Schema is valid');
+                } else {
+                    const diagnostics = schemaValidator.createDiagnostics(document, result);
+                    const collection = vscode.languages.createDiagnosticCollection('mcp');
+                    collection.set(document.uri, diagnostics);
+                    vscode.window.showErrorMessage(
+                        `Schema has ${result.errors.length} error(s)`
+                    );
+                }
             },
         },
         {
             id: 'mcp-app-builder.generateTypes',
             handler: async () => {
                 logger.info('Command: Generate Types');
-                vscode.window.showInformationMessage('MCP: Generate Types - Coming soon');
+
+                // Find mcp-tools.json in workspace
+                const workspaceFolders = vscode.workspace.workspaceFolders;
+                if (!workspaceFolders) {
+                    vscode.window.showWarningMessage('No workspace folder open');
+                    return;
+                }
+
+                const toolsFiles = await vscode.workspace.findFiles(
+                    '**/mcp-tools.json',
+                    '**/node_modules/**'
+                );
+
+                if (toolsFiles.length === 0) {
+                    vscode.window.showWarningMessage('No mcp-tools.json found in workspace');
+                    return;
+                }
+
+                let toolsUri = toolsFiles[0];
+                if (toolsFiles.length > 1) {
+                    const items = toolsFiles.map((uri) => ({
+                        label: vscode.workspace.asRelativePath(uri),
+                        uri,
+                    }));
+                    const selected = await vscode.window.showQuickPick(items, {
+                        placeHolder: 'Select tools file to generate types from',
+                    });
+                    if (!selected) {
+                        return;
+                    }
+                    toolsUri = selected.uri;
+                }
+
+                try {
+                    const content = await vscode.workspace.fs.readFile(toolsUri);
+                    const toolsFile = typeGenerator.parseToolsFile(
+                        Buffer.from(content).toString('utf-8')
+                    );
+                    const generated = typeGenerator.generate(toolsFile);
+
+                    // Write to src/types/tools.generated.ts
+                    const outputDir = vscode.Uri.joinPath(
+                        vscode.Uri.file(toolsUri.fsPath.replace(/mcp-tools\.json$/, '')),
+                        'src',
+                        'types'
+                    );
+
+                    try {
+                        await vscode.workspace.fs.stat(outputDir);
+                    } catch {
+                        await vscode.workspace.fs.createDirectory(outputDir);
+                    }
+
+                    const outputUri = vscode.Uri.joinPath(outputDir, 'tools.generated.ts');
+                    await vscode.workspace.fs.writeFile(
+                        outputUri,
+                        Buffer.from(generated.content, 'utf-8')
+                    );
+
+                    vscode.window.showInformationMessage(
+                        `Generated types for ${generated.toolCount} tools`
+                    );
+
+                    // Open the generated file
+                    const doc = await vscode.workspace.openTextDocument(outputUri);
+                    await vscode.window.showTextDocument(doc);
+                } catch (error) {
+                    const message = error instanceof Error ? error.message : String(error);
+                    vscode.window.showErrorMessage(`Failed to generate types: ${message}`);
+                }
             },
         },
         {
