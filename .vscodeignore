@@ -1,0 +1,16 @@
+.vscode/**
+.vscode-test/**
+src/**
+docs/**
+**/*.ts
+!out/**/*.js
+**/*.map
+.gitignore
+tsconfig.json
+eslint*
+node_modules/**
+!node_modules/@modelcontextprotocol/**
+!node_modules/zod/**
+!node_modules/zod-to-json-schema/**
+.github/**
+RESEARCH.md

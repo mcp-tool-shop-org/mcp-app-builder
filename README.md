@@ -1,8 +1,12 @@
+<p align="center">
+  <img src="media/icon.png" alt="MCP App Builder" width="96" />
+</p>
+
 # MCP App Builder
 
-> VS Code extension for building MCP servers with interactive UI components
+> Build MCP servers with interactive UI components — from VS Code.
 
-[![GitHub](https://img.shields.io/badge/GitHub-mcp--tool--shop--org-blue)](https://github.com/mcp-tool-shop-org/mcp-app-builder)
+[![CI](https://github.com/mcp-tool-shop-org/mcp-app-builder/actions/workflows/ci.yml/badge.svg)](https://github.com/mcp-tool-shop-org/mcp-app-builder/actions/workflows/ci.yml)
 [![MCP](https://img.shields.io/badge/MCP-1.0-green)](https://modelcontextprotocol.io)
 
 ## Overview
@@ -18,6 +22,7 @@
 
 ### Development
 - **Schema Validation**: Real-time validation of `mcp.json` and `mcp-tools.json`
+- **Auto-validate on save**: Schemas checked automatically when you save (configurable)
 - **Type Generation**: Generate TypeScript types from tool definitions
 - **IntelliSense**: JSON Schema support for config files
 
@@ -40,6 +45,13 @@
    - `with-ui` - Server with table and chart UI components
    - `full` - Complete server with tools, resources, and prompts
 
+## Keyboard Shortcuts
+
+| Shortcut | Command |
+|----------|---------|
+| `Ctrl+Alt+N` (`Cmd+Alt+N` on Mac) | New Server |
+| `Ctrl+Alt+V` (`Cmd+Alt+V` on Mac) | Validate Schema |
+
 ## Commands
 
 | Command | Description |
@@ -50,15 +62,13 @@
 | `MCP: Test Server` | Run tests against your MCP tools |
 | `MCP: Open Dashboard` | Open the visual dashboard |
 
-## Configuration
+## Settings
 
-```json
-{
-  "mcp-app-builder.defaultTemplate": "basic",
-  "mcp-app-builder.autoValidate": true,
-  "mcp-app-builder.testPort": 3000
-}
-```
+| Setting | Default | Description |
+|---------|---------|-------------|
+| `mcp-app-builder.defaultTemplate` | `basic` | Default template for new servers (basic/with-ui/full) |
+| `mcp-app-builder.autoValidate` | `true` | Validate schemas automatically on save |
+| `mcp-app-builder.testPort` | `3000` | Port for the MCP test server |
 
 ## MCP Apps UI Components
 

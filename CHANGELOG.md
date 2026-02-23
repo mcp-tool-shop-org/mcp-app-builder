@@ -53,7 +53,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Planned
-- AI-assisted tool generation
-- One-click publishing
-- Visual UI builder
+## [0.1.1] - 2026-02-23
+
+### Added
+- **Keyboard shortcuts** — `Ctrl+Alt+N` for New Server, `Ctrl+Alt+V` for Validate Schema
+- **Auto-validate on save** — schemas validated automatically when saving `mcp.json` or `mcp-tools.json` (controlled by `autoValidate` setting)
+- Extension icon and marketplace metadata (homepage, bugs URL)
+- CI workflow (paths-gated, TypeScript compile + ESLint)
+- GitHub Pages landing page
+- `.vscodeignore` for lean VSIX packaging

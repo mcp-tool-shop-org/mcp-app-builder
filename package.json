@@ -9,6 +9,11 @@
     "type": "git",
     "url": "https://github.com/mcp-tool-shop-org/mcp-app-builder"
   },
+  "bugs": {
+    "url": "https://github.com/mcp-tool-shop-org/mcp-app-builder/issues"
+  },
+  "homepage": "https://mcp-tool-shop-org.github.io/mcp-app-builder/",
+  "icon": "media/icon.png",
   "engines": {
     "vscode": "^1.85.0"
   },
@@ -55,6 +60,19 @@
         "command": "mcp-app-builder.openDashboard",
         "title": "MCP: Open Dashboard",
         "category": "MCP"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "mcp-app-builder.newServer",
+        "key": "ctrl+alt+n",
+        "mac": "cmd+alt+n"
+      },
+      {
+        "command": "mcp-app-builder.validateSchema",
+        "key": "ctrl+alt+v",
+        "mac": "cmd+alt+v",
+        "when": "workspaceFolderCount > 0"
       }
     ],
     "menus": {

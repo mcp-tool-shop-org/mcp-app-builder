@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import { registerCommands } from './commands';
 import { MCPConfigProvider } from './providers/configProvider';
+import { SchemaValidator } from './validation';
 import { OutputChannelLogger } from './utils/logger';
 
 let outputChannel: vscode.OutputChannel;
@@ -34,6 +35,35 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
             fileWatcher.onDidCreate(() => configProvider.refresh()),
             fileWatcher.onDidDelete(() => configProvider.refresh()),
             fileWatcher
+        );
+
+        // Auto-validate on save
+        const diagnosticCollection = vscode.languages.createDiagnosticCollection('mcp');
+        const schemaValidator = new SchemaValidator(logger);
+        context.subscriptions.push(
+            diagnosticCollection,
+            vscode.workspace.onDidSaveTextDocument((document) => {
+                const config = vscode.workspace.getConfiguration('mcp-app-builder');
+                if (!config.get<boolean>('autoValidate', true)) {
+                    return;
+                }
+
+                const fileName = document.fileName;
+                if (!fileName.endsWith('mcp.json') && !fileName.endsWith('mcp-tools.json')) {
+                    return;
+                }
+
+                const result = fileName.endsWith('mcp-tools.json')
+                    ? schemaValidator.validateTools(document.getText())
+                    : schemaValidator.validateConfig(document.getText());
+
+                const diagnostics = schemaValidator.createDiagnostics(document, result);
+                diagnosticCollection.set(document.uri, diagnostics);
+
+                if (!result.valid) {
+                    logger.info(`[AutoValidate] ${fileName}: ${result.errors.length} error(s)`);
+                }
+            })
         );
 
         // Register status bar item

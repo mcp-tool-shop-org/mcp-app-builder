@@ -191,9 +191,10 @@ export class SchemaValidator {
 
                     // Check for required parameters without defaults
                     for (const param of tool.parameters) {
-                        if (param.required && param.default !== undefined) {
+                        const p = param as { name: string; required?: boolean; default?: unknown };
+                        if (p.required && p.default !== undefined) {
                             result.warnings.push({
-                                path: `tools.${tool.name}.parameters.${param.name}`,
+                                path: `tools.${tool.name}.parameters.${p.name}`,
                                 message: 'Required parameter has a default value',
                             });
                         }
