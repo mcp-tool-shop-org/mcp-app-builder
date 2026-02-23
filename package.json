@@ -2,7 +2,7 @@
   "name": "mcp-app-builder",
   "displayName": "MCP App Builder",
   "description": "Build MCP servers with interactive UI components",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "publisher": "mcp-tool-shop",
   "license": "MIT",
   "repository": {
