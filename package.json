@@ -33,7 +33,7 @@
     "onCommand:mcp-app-builder.newServer",
     "workspaceContains:**/mcp.json"
   ],
-  "main": "./out/extension.js",
+  "main": "./dist/extension.js",
   "contributes": {
     "commands": [
       {
@@ -148,9 +148,10 @@
     ]
   },
   "scripts": {
-    "vscode:prepublish": "npm run compile",
+    "vscode:prepublish": "npm run build",
+    "build": "node esbuild.mjs",
+    "watch": "node esbuild.mjs --watch",
     "compile": "tsc -p ./",
-    "watch": "tsc -watch -p ./",
     "lint": "eslint src --ext ts",
     "test": "vitest",
     "test:coverage": "vitest --coverage",
@@ -163,6 +164,7 @@
     "@typescript-eslint/eslint-plugin": "^6.19.0",
     "@typescript-eslint/parser": "^6.19.0",
     "@vscode/vsce": "^2.22.0",
+    "esbuild": "^0.24.2",
     "eslint": "^8.56.0",
     "typescript": "^5.3.3",
     "vitest": "^1.2.0"
