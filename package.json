@@ -2,7 +2,7 @@
   "name": "mcp-app-builder",
   "displayName": "MCP App Builder",
   "description": "Build MCP servers with interactive UI components",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "publisher": "mcp-tool-shop",
   "license": "MIT",
   "repository": {
@@ -105,7 +105,11 @@
         "mcp-app-builder.defaultTemplate": {
           "type": "string",
           "default": "basic",
-          "enum": ["basic", "with-ui", "full"],
+          "enum": [
+            "basic",
+            "with-ui",
+            "full"
+          ],
           "description": "Default template for new MCP servers"
         },
         "mcp-app-builder.autoValidate": {
@@ -133,8 +137,13 @@
     "languages": [
       {
         "id": "mcp-json",
-        "aliases": ["MCP Configuration"],
-        "filenames": ["mcp.json", "mcp-tools.json"]
+        "aliases": [
+          "MCP Configuration"
+        ],
+        "filenames": [
+          "mcp.json",
+          "mcp-tools.json"
+        ]
       }
     ]
   },
