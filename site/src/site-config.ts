@@ -12,7 +12,7 @@ export const config: SiteConfig = {
     badge: 'v0.1.2 — VS Code Extension',
     headline: 'Build MCP servers',
     headlineAccent: 'from VS Code.',
-    description: '<img src="logo.png" alt="MCP App Builder" width="200" style="margin:0 auto 1.5rem" /><br/>Scaffold, validate, test, and deploy MCP servers with interactive UI components — all from your editor.',
+    description: 'Scaffold, validate, test, and deploy MCP servers with interactive UI components — all from your editor.',
     primaryCta: { href: '#quick-start', label: 'Get started' },
     secondaryCta: { href: '#features', label: 'See features' },
     previews: [
