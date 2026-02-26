@@ -1,5 +1,7 @@
 <p align="center">
-  <img src="assets/logo.png" alt="MCP App Builder" width="400" />
+  
+            <img src="https://raw.githubusercontent.com/mcp-tool-shop-org/brand/main/logos/mcp-app-builder/readme.png"
+           alt="MCP App Builder" width="400" />
 </p>
 
 <p align="center">
