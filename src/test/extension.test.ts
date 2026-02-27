@@ -2,8 +2,6 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 // Mock vscode before importing the module under test
 vi.mock('vscode', () => {
-    const disposables: Array<{ dispose: () => void }> = [];
-
     return {
         window: {
             createOutputChannel: vi.fn(() => ({
