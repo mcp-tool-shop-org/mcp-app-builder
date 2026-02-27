@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.0] - 2026-02-27
+
 ### Added
 - Structured error class (`AppBuilderError`) with code, message, hint, cause, retryable
 - SECURITY.md with vulnerability reporting policy
@@ -19,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Command error handler now surfaces structured error codes via VS Code notifications
+- Promoted to v1.0.0 — all Shipcheck hard gates pass
 
 ## [0.2.1] - 2026-02-27
 
