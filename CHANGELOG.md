@@ -5,6 +5,29 @@ All notable changes to MCP App Builder will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.0] - 2026-02-26
+
+### Changed
+- **Real MCP transport** — Test Server command now connects to actual MCP servers via stdio or HTTP instead of returning simulated responses
+- MCPTestClient rewritten to wrap the official `@modelcontextprotocol/sdk` Client
+- TestRunner connects, executes real tool calls, and validates real responses
+
+### Fixed
+- DiagnosticCollection leak — shared single instance instead of creating one per validation
+- OutputChannel leak — test output channel created once and reused
+- Dropped promise in MCPConfigProvider constructor
+- Webview CSP hardened: nonce-based `style-src` replaces `unsafe-inline`
+- Nonce generation uses `crypto.randomBytes` instead of `Math.random`
+- Template interpolation sanitized with `sanitizeName()` for defense in depth
+
+### Removed
+- Unused `zod-to-json-schema` dependency
+
+### Added
+- 55 unit tests across 5 test files (schema validation, type generation, templates, test generator, UI primitives)
+- CI now runs tests alongside compile and lint
+- `MCPTransportConfig` extended with `command` and `args` fields for stdio servers
+
 ## [0.1.0] - 2026-02-02
 
 ### Added
