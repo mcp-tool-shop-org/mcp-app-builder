@@ -1,82 +1,85 @@
 <p align="center">
+  <a href="README.ja.md">日本語</a> | <a href="README.zh.md">中文</a> | <a href="README.es.md">Español</a> | <a href="README.fr.md">Français</a> | <a href="README.hi.md">हिन्दी</a> | <a href="README.it.md">Italiano</a> | <a href="README.md">English</a>
+</p>
+
+<p align="center">
   <img src="https://raw.githubusercontent.com/mcp-tool-shop-org/brand/main/logos/mcp-app-builder/readme.png" alt="MCP App Builder" width="400" />
 </p>
 
 <p align="center">
   <a href="https://github.com/mcp-tool-shop-org/mcp-app-builder/actions/workflows/ci.yml"><img src="https://github.com/mcp-tool-shop-org/mcp-app-builder/actions/workflows/ci.yml/badge.svg" alt="CI" /></a>
+  <a href="https://codecov.io/gh/mcp-tool-shop-org/mcp-app-builder"><img src="https://codecov.io/gh/mcp-tool-shop-org/mcp-app-builder/branch/main/graph/badge.svg" alt="codecov" /></a>
   <img src="https://img.shields.io/badge/license-MIT-blue" alt="MIT License" />
   <a href="https://modelcontextprotocol.io"><img src="https://img.shields.io/badge/MCP-1.0-green" alt="MCP" /></a>
   <a href="https://mcp-tool-shop-org.github.io/mcp-app-builder/"><img src="https://img.shields.io/badge/Landing_Page-live-blue" alt="Landing Page" /></a>
 </p>
 
-# Construtor de Aplicativos MCP
-
-Crie servidores MCP com componentes de interface de usuário interativos – diretamente do VS Code.
+> Crie servidores MCP com componentes de interface de usuário interativos — diretamente do VS Code.
 
 ## Visão geral
 
-**MCP App Builder** auxilia os desenvolvedores a criar, testar e implantar servidores MCP (Model Context Protocol) de forma rápida. Ele suporta o novo padrão **MCP Apps** (janeiro de 2026), permitindo a integração de componentes de interface de usuário interativos diretamente em conversas de inteligência artificial.
+O **MCP App Builder** ajuda desenvolvedores a criar, testar e implantar rapidamente servidores MCP (Model Context Protocol). Ele suporta o novo padrão **MCP Apps** (janeiro de 2026), permitindo componentes de interface de usuário interativos diretamente em conversas de IA.
 
-## Características
+## Recursos
 
-### Andaimes
-- **Assistente para criação de servidores:** Crie servidores MCP com configuração guiada.
-- **Modelos:** Configurações básicas, com interface gráfica e completas para servidores.
-- **Configuração automática:** Suporte para TypeScript, MCP SDK e estrutura de projetos.
+### Estrutura
+- **Assistente para Novo Servidor**: Crie servidores MCP com configuração guiada.
+- **Modelos**: Configurações básicas, com interface de usuário e completas para servidores.
+- **Configuração automática**: TypeScript, MCP SDK e estrutura do projeto.
 
 ### Desenvolvimento
-- **Validação de Esquemas:** Validação em tempo real dos arquivos `mcp.json` e `mcp-tools.json`.
-- **Validação automática ao salvar:** Os esquemas são verificados automaticamente quando você salva (configurável).
-- **Geração de Tipos:** Geração de tipos TypeScript a partir das definições das ferramentas.
-- **IntelliSense:** Suporte a JSON Schema para arquivos de configuração.
+- **Validação de Esquema**: Validação em tempo real de `mcp.json` e `mcp-tools.json`.
+- **Validação automática ao salvar**: Esquemas verificados automaticamente ao salvar (configurável).
+- **Geração de Tipos**: Gere tipos TypeScript a partir de definições de ferramentas.
+- **IntelliSense**: Suporte para JSON Schema em arquivos de configuração.
 
 ### Testes
-- **Ambiente de Testes:** Execute testes nas suas ferramentas MCP.
-- **Testes Gerados Automaticamente:** Testes criados a partir de definições de ferramentas e exemplos.
-- **Canal de Saída:** Resultados dos testes formatados, com indicação de aprovação/reprovação.
+- **Ambiente de Teste**: Execute testes contra suas ferramentas MCP.
+- **Testes Gerados Automaticamente**: Testes criados a partir de definições de ferramentas e exemplos.
+- **Canal de Saída**: Resultados de teste formatados com status de aprovação/reprovação.
 
-### Painel de controle
-- **Interface Visual:** Acesso rápido a todos os comandos.
-- **Integração com o Ambiente de Trabalho:** Detecta projetos MCP automaticamente.
-- **Barra de Status:** Indicador de projeto MCP quando estiver trabalhando em um projeto MCP.
+### Painel
+- **Interface Visual**: Acesso rápido a todos os comandos.
+- **Integração com o Workspace**: Detecta projetos MCP automaticamente.
+- **Barra de Status**: Indicador MCP quando em um projeto MCP.
 
-## Início rápido
+## Como Começar
 
-1. **Instale a extensão** na loja do VS Code (em breve).
-2. **Crie um novo servidor:** `Cmd+Shift+P` → "MCP: Novo Servidor"
-3. **Escolha um modelo:**
-- `basic` - Servidor simples de "olá, mundo".
-- `with-ui` - Servidor com componentes de interface de usuário, incluindo tabelas e gráficos.
-- `full` - Servidor completo, com ferramentas, recursos e exemplos.
+1. **Instale a extensão** da VS Code Marketplace (em breve).
+2. **Crie um novo servidor**: `Cmd+Shift+P` → "MCP: Novo Servidor"
+3. **Escolha um modelo**:
+- `básico` - Servidor simples de "olá, mundo".
+- `com-interface` - Servidor com componentes de interface de usuário de tabela e gráfico.
+- `completo` - Servidor completo com ferramentas, recursos e prompts.
 
-## Atalhos de teclado
+## Atalhos de Teclado
 
-| Atalho. | Comando. |
-| Please provide the English text you would like me to translate. I am ready to translate it into Portuguese. | Please provide the English text you would like me to translate. I am ready to translate it into Portuguese. |
-| `Ctrl+Alt+N` (ou `Cmd+Alt+N` no Mac). | Novo servidor. |
-| `Ctrl+Alt+V` (ou `Cmd+Alt+V` no Mac). | Validar o esquema. |
+| Atalho | Comando |
+|----------|---------|
+| `Ctrl+Alt+N` (`Cmd+Alt+N` no Mac) | Novo Servidor |
+| `Ctrl+Alt+V` (`Cmd+Alt+V` no Mac) | Validar Esquema |
 
 ## Comandos
 
-| Comando. | Descrição. |
-| Please provide the English text you would like me to translate. I am ready to translate it into Portuguese. | "Please provide the text you would like me to translate." |
-| `MCP: New Server` | Crie um novo projeto de servidor MCP. |
-| `MCP: Validate Schema` | Valide o arquivo mcp.json ou mcp-tools.json atual. |
-| `MCP: Generate Types` | Gerar tipos TypeScript a partir de definições de ferramentas. |
-| `MCP: Test Server` | Execute testes nas suas ferramentas MCP. |
-| `MCP: Open Dashboard` | Abra o painel de controle visual. |
+| Comando | Descrição |
+|---------|-------------|
+| `MCP: New Server` | Cria um novo projeto de servidor MCP. |
+| `MCP: Validate Schema` | Valida o arquivo `mcp.json` ou `mcp-tools.json` atual. |
+| `MCP: Generate Types` | Gera tipos TypeScript a partir de definições de ferramentas. |
+| `MCP: Test Server` | Executa testes contra suas ferramentas MCP. |
+| `MCP: Open Dashboard` | Abre o painel visual. |
 
 ## Configurações
 
-| Cenário. | Padrão. | Descrição. |
-| Please provide the English text you would like me to translate. I am ready to translate it into Portuguese. | Please provide the English text you would like me to translate. I am ready to translate it into Portuguese. | "Please provide the text you would like me to translate." |
-| `mcp-app-builder.defaultTemplate` | `basic` | Modelo padrão para novos servidores (básico/com interface gráfica/completo). |
-| `mcp-app-builder.autoValidate` | `true` | Validar automaticamente os esquemas ao salvar. |
-| `mcp-app-builder.testPort` | `3000` | Porta para o servidor de teste do MCP. |
+| Configuração | Padrão | Descrição |
+|---------|---------|-------------|
+| `mcp-app-builder.defaultTemplate` | `basic` | Modelo padrão para novos servidores (básico/com-interface/completo). |
+| `mcp-app-builder.autoValidate` | `true` | Validar esquemas automaticamente ao salvar. |
+| `mcp-app-builder.testPort` | `3000` | Porta para o servidor de teste MCP. |
 
-## Componentes de interface de usuário para aplicativos MCP
+## Componentes de Interface de Usuário MCP Apps
 
-A extensão oferece ferramentas para a criação de componentes de interface de usuário (UI) para aplicativos MCP:
+A extensão fornece ferramentas para componentes de interface de usuário MCP Apps:
 
 ```typescript
 import { table, chart, form, card } from '@mcp-app-builder/ui-components';
@@ -102,9 +105,9 @@ const dashboard = dashboard({
 });
 ```
 
-## Estrutura de arquivos
+## Estrutura de Arquivos
 
-Os projetos de servidor MCP gerados seguem esta estrutura:
+Projetos de servidor MCP gerados seguem esta estrutura:
 
 ```
 my-mcp-server/
@@ -122,8 +125,8 @@ my-mcp-server/
 
 ### Pré-requisitos
 
-- Node.js versão 18 ou superior
-- VS Code versão 1.85 ou superior
+- Node.js 18+
+- VS Code 1.85+
 
 ### Configuração
 
@@ -134,9 +137,9 @@ npm install
 npm run compile
 ```
 
-### Corrida
+### Execução
 
-Pressione a tecla `F5` no VS Code para iniciar o ambiente de desenvolvimento de extensões.
+Pressione `F5` no VS Code para iniciar o Ambiente de Desenvolvimento de Extensões.
 
 ### Testes
 
@@ -144,48 +147,52 @@ Pressione a tecla `F5` no VS Code para iniciar o ambiente de desenvolvimento de 
 npm test
 ```
 
-## Roteiro.
-Plano de ação.
-Cronograma.
-Mapa de estradas.
-(Dependendo do contexto, pode também ser traduzido como "Guia" ou "Diretrizes".)
+## Próximos Passos
 
-### Fase 1 (Atual) – Base Determinística
-- [x] Criação de estruturas de projeto com modelos.
-- [x] Sistema de validação de esquemas.
+### Fase 1 (Atual) - Fundação Determinística
+- [x] Estrutura de projeto com modelos.
+- [x] Sistema de validação de esquema.
 - [x] Geração de tipos a partir de esquemas.
-- [x] Elementos básicos para componentes de interface do usuário.
-- [x] Base para a estrutura de testes.
-- [x] Visualização web do painel de controle.
+- [x] Componentes primitivos de interface de usuário.
+- [x] Fundação do ambiente de teste.
+- [x] Painel web.
 
-### Fase 2: Desenvolvimento assistido por inteligência artificial
-- [ ] Geração de ferramentas de inteligência artificial a partir de linguagem natural.
-- [ ] Sugestões inteligentes de código para usuários de ferramentas.
-- [ ] Geração automática de documentação.
+### Fase 2 - Desenvolvimento Assistido por IA
+- [ ] Geração de ferramentas por IA a partir de linguagem natural.
+- [ ] Preenchimento automático inteligente para manipuladores de ferramentas.
+- [ ] Geração automatizada de documentação.
 
-### Fase 3 – Publicação e Distribuição
-- [ ] Publicação com um único clique nos registros do MCP.
+### Fase 3 - Publicação e Distribuição
+- [ ] Publicação com um clique em registros MCP.
 - [ ] Gerenciamento de versões.
 - [ ] Resolução de dependências.
 
-### Fase 4 – Construtor Visual
-- [ ] Construtor de componentes de interface gráfica por arrastar e soltar.
+### Fase 4 - Construtor Visual
+- [ ] Construtor de componentes de interface de usuário de arrastar e soltar.
 - [ ] Visualização em tempo real de aplicativos MCP.
-- [ ] Editor de fluxos de trabalho visual.
+- [ ] Editor de fluxo visual.
 
-## Contribuindo
+## Contribuições
 
-Aceitamos contribuições! Por favor, leia nossas diretrizes de contribuição (que serão disponibilizadas em breve).
+As contribuições são bem-vindas! Por favor, leia nossas diretrizes de contribuição (em breve).
+
+## Segurança e Privacidade
+
+**Dados acessados:** arquivos do espaço de trabalho (mcp.json, mcp-tools.json, TypeScript gerado), configurações do VS Code, canais de saída da extensão.
+
+**Dados NÃO acessados:** código-fonte além das configurações do MCP, histórico do Git, rede (exceto para o ambiente de testes local), credenciais, variáveis de ambiente. Nenhuma informação de telemetria é coletada ou enviada.
+
+**Permissões:** leitura/escrita no sistema de arquivos para a criação de estruturas e geração de tipos (apenas no espaço de trabalho), rede local para o ambiente de testes. Consulte [SECURITY.md](SECURITY.md) para a política completa.
 
 ## Licença
 
-MIT.
+MIT
 
 ## Links
 
-- [Protocolo de Contexto do Modelo](https://modelcontextprotocol.io)
-- [Especificação de Aplicações MCP](http://blog.modelcontextprotocol.io/posts/2026-01-26-mcp-apps/)
-- [Organização no GitHub](https://github.com/mcp-tool-shop-org)
+- [Model Context Protocol](https://modelcontextprotocol.io)
+- [MCP Apps Specification](http://blog.modelcontextprotocol.io/posts/2026-01-26-mcp-apps/)
+- [Organização do GitHub](https://github.com/mcp-tool-shop-org)
 
 ---
 
