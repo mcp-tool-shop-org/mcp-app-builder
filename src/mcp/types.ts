@@ -85,6 +85,7 @@ export interface MCPServerConfig {
     resourceTemplates?: MCPResourceTemplate[];
     prompts?: MCPPrompt[];
     capabilities?: MCPCapabilities;
+    transport?: MCPTransportConfig;
 }
 
 export interface MCPCapabilities {
@@ -212,6 +213,8 @@ export type MCPTransportType = 'stdio' | 'http' | 'websocket';
 
 export interface MCPTransportConfig {
     type: MCPTransportType;
+    command?: string;
+    args?: string[];
     options?: {
         port?: number;
         host?: string;

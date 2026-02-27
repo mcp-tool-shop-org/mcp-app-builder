@@ -2,7 +2,7 @@
  * MCP Test Harness
  *
  * Provides a testing environment for MCP servers during development.
- * Simulates client interactions and validates responses.
+ * Connects to real MCP servers and validates tool responses.
  */
 
 import * as vscode from 'vscode';
@@ -12,6 +12,7 @@ import type {
     MCPToolResult,
     MCPServerConfig,
 } from '../mcp/types';
+import { MCPTestClient, createStdioTestClient, createHttpTestClient } from '../mcp/client';
 
 // ============================================================================
 // Test Case Types
@@ -55,9 +56,9 @@ export class TestRunner {
     private readonly logger: OutputChannelLogger;
     private readonly outputChannel: vscode.OutputChannel;
 
-    constructor(logger: OutputChannelLogger) {
+    constructor(logger: OutputChannelLogger, outputChannel: vscode.OutputChannel) {
         this.logger = logger;
-        this.outputChannel = vscode.window.createOutputChannel('MCP Test Runner');
+        this.outputChannel = outputChannel;
     }
 
     async runTests(tests: TestCase[], serverConfig: MCPServerConfig): Promise<TestSuiteResult> {
@@ -70,15 +71,52 @@ export class TestRunner {
         this.outputChannel.appendLine('═'.repeat(60));
         this.outputChannel.appendLine('');
 
-        for (const test of tests) {
-            const result = await this.runTest(test);
-            results.push(result);
-
-            const status = result.passed ? '✓' : '✗';
-            const statusColor = result.passed ? '' : '  ERROR: ';
+        // Create and connect client based on server config
+        let client: MCPTestClient;
+        try {
+            client = this.createClient(serverConfig);
+            this.outputChannel.appendLine('Connecting to server...');
+            const info = await client.connect();
             this.outputChannel.appendLine(
-                `${status} ${test.name} (${result.duration}ms)${statusColor}${result.error || ''}`
+                `Connected to ${info.name} v${info.version}`
             );
+            this.outputChannel.appendLine('');
+        } catch (error) {
+            const message = error instanceof Error ? error.message : String(error);
+            this.logger.error('Failed to connect to MCP server', error);
+            this.outputChannel.appendLine(`Failed to connect: ${message}`);
+            this.outputChannel.appendLine('');
+            this.outputChannel.appendLine('═'.repeat(60));
+
+            return {
+                passed: 0,
+                failed: tests.length,
+                skipped: 0,
+                duration: Date.now() - startTime,
+                results: tests.map((t) => ({
+                    testId: t.id,
+                    passed: false,
+                    duration: 0,
+                    error: `Connection failed: ${message}`,
+                })),
+            };
+        }
+
+        try {
+            for (const test of tests) {
+                const result = await this.runTest(test, client);
+                results.push(result);
+
+                const status = result.passed ? '✓' : '✗';
+                const statusColor = result.passed ? '' : '  ERROR: ';
+                this.outputChannel.appendLine(
+                    `${status} ${test.name} (${result.duration}ms)${statusColor}${result.error || ''}`
+                );
+            }
+        } finally {
+            await client.disconnect();
+            this.outputChannel.appendLine('');
+            this.outputChannel.appendLine('Disconnected from server.');
         }
 
         const suiteResult: TestSuiteResult = {
@@ -99,19 +137,26 @@ export class TestRunner {
         return suiteResult;
     }
 
-    private async runTest(test: TestCase): Promise<TestResult> {
+    private async runTest(test: TestCase, client: MCPTestClient): Promise<TestResult> {
         const startTime = Date.now();
+        const timeout = test.timeout ?? 30000;
 
         try {
-            // In Phase 1, we simulate the tool call
-            // Full integration with actual MCP servers comes later
-            const mockResult = await this.simulateToolCall(test.tool, test.input);
+            const result = await Promise.race([
+                client.callTool(test.tool, test.input),
+                new Promise<never>((_, reject) =>
+                    setTimeout(
+                        () => reject(new Error(`Test timed out after ${timeout}ms`)),
+                        timeout
+                    )
+                ),
+            ]);
 
             let passed = true;
             let error: string | undefined;
 
             if (test.expectedOutput) {
-                const validation = this.validateOutput(mockResult, test.expectedOutput);
+                const validation = this.validateOutput(result, test.expectedOutput);
                 passed = validation.passed;
                 error = validation.error;
             }
@@ -121,7 +166,7 @@ export class TestRunner {
                 passed,
                 duration: Date.now() - startTime,
                 error,
-                output: mockResult,
+                output: result,
             };
         } catch (e) {
             return {
@@ -133,22 +178,25 @@ export class TestRunner {
         }
     }
 
-    private async simulateToolCall(
-        toolName: string,
-        input: Record<string, unknown>
-    ): Promise<MCPToolResult> {
-        // Simulate network latency
-        await new Promise((resolve) => setTimeout(resolve, 10));
+    private createClient(serverConfig: MCPServerConfig): MCPTestClient {
+        const transport = serverConfig.transport ?? { type: 'stdio' as const };
 
-        // Return mock response based on tool name
-        return {
-            content: [
-                {
-                    type: 'text',
-                    text: `Mock response from ${toolName} with input: ${JSON.stringify(input)}`,
-                },
-            ],
-        };
+        if (transport.type === 'stdio') {
+            const command = transport.command;
+            if (!command) {
+                throw new Error(
+                    'stdio transport requires "command" in mcp.json transport config. ' +
+                        'Example: { "type": "stdio", "command": "node", "args": ["dist/index.js"] }'
+                );
+            }
+            return createStdioTestClient(command, transport.args);
+        } else if (transport.type === 'http') {
+            const port = transport.options?.port ?? 3000;
+            const host = transport.options?.host ?? 'localhost';
+            return createHttpTestClient(port, host);
+        }
+
+        throw new Error(`Unsupported transport type: ${transport.type}`);
     }
 
     private validateOutput(

@@ -6,6 +6,7 @@
  */
 
 import * as vscode from 'vscode';
+import * as crypto from 'crypto';
 import type { OutputChannelLogger } from '../utils/logger';
 
 export class DashboardPanel {
@@ -140,9 +141,9 @@ export class DashboardPanel {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'nonce-${nonce}';">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'nonce-${nonce}'; script-src 'nonce-${nonce}';">
     <title>MCP Dashboard</title>
-    <style>
+    <style nonce="${nonce}">
         :root {
             --vscode-font-family: var(--vscode-font-family, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
             --container-padding: 20px;
@@ -364,11 +365,6 @@ export class DashboardPanel {
     }
 
     private getNonce(): string {
-        let text = '';
-        const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        for (let i = 0; i < 32; i++) {
-            text += possible.charAt(Math.floor(Math.random() * possible.length));
-        }
-        return text;
+        return crypto.randomBytes(16).toString('hex');
     }
 }

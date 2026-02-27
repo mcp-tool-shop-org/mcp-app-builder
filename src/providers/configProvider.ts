@@ -21,7 +21,7 @@ export class MCPConfigProvider {
 
     constructor(logger: OutputChannelLogger) {
         this.logger = logger;
-        this.refresh();
+        void this.refresh();
     }
 
     async refresh(): Promise<void> {

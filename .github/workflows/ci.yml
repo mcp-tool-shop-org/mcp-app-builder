@@ -23,7 +23,7 @@ concurrency:
 
 jobs:
   build:
-    name: Build & Lint
+    name: Build, Lint & Test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -40,3 +40,6 @@ jobs:
 
       - name: Lint (ESLint)
         run: npm run lint
+
+      - name: Run tests
+        run: npm test -- --run

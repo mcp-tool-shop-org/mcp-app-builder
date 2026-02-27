@@ -23,11 +23,26 @@ export interface GeneratedFile {
     content: string;
 }
 
+/**
+ * Sanitizes a server name for safe interpolation into generated source code.
+ * Enforces the allowed pattern and escapes characters that could break
+ * template strings or JSON.
+ */
+export function sanitizeName(name: string): string {
+    if (!/^[a-z][a-z0-9-]*$/.test(name)) {
+        throw new Error(
+            `Invalid server name "${name}": must match ^[a-z][a-z0-9-]*$`
+        );
+    }
+    return name.replace(/\\/g, '\\\\').replace(/`/g, '\\`').replace(/\$/g, '\\$');
+}
+
 // ============================================================================
 // Template: Basic
 // ============================================================================
 
 function generateBasicTemplate(config: TemplateConfig): GeneratedFile[] {
+    const safeName = sanitizeName(config.name);
     const files: GeneratedFile[] = [];
 
     // mcp.json
@@ -99,7 +114,7 @@ import {
 
 const server = new Server(
     {
-        name: '${config.name}',
+        name: '${safeName}',
         version: '0.1.0',
     },
     {
@@ -154,7 +169,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 async function main() {
     const transport = new StdioServerTransport();
     await server.connect(transport);
-    console.error('${config.name} MCP server running on stdio');
+    console.error('${safeName} MCP server running on stdio');
 }
 
 main().catch(console.error);

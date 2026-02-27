@@ -17,8 +17,13 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
     logger.info('Activating MCP App Builder extension...');
 
     try {
-        // Register all commands
-        registerCommands(context, logger);
+        // Create shared resources (single instances, disposed on deactivation)
+        const diagnosticCollection = vscode.languages.createDiagnosticCollection('mcp');
+        const testOutputChannel = vscode.window.createOutputChannel('MCP Test Results');
+        context.subscriptions.push(diagnosticCollection, testOutputChannel);
+
+        // Register all commands with shared resources
+        registerCommands(context, logger, diagnosticCollection, testOutputChannel);
 
         // Register configuration provider for workspace detection
         const configProvider = new MCPConfigProvider(logger);
@@ -38,10 +43,8 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
         );
 
         // Auto-validate on save
-        const diagnosticCollection = vscode.languages.createDiagnosticCollection('mcp');
         const schemaValidator = new SchemaValidator(logger);
         context.subscriptions.push(
-            diagnosticCollection,
             vscode.workspace.onDidSaveTextDocument((document) => {
                 const config = vscode.workspace.getConfiguration('mcp-app-builder');
                 if (!config.get<boolean>('autoValidate', true)) {

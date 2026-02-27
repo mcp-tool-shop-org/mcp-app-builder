@@ -5,15 +5,18 @@ import { TypeGenerator } from '../codegen';
 import { SchemaValidator } from '../validation';
 import { TestRunner, TestGenerator } from '../testing';
 import { DashboardPanel } from '../webview';
+import type { MCPServerConfig } from '../mcp/types';
 
 export function registerCommands(
     context: vscode.ExtensionContext,
-    logger: OutputChannelLogger
+    logger: OutputChannelLogger,
+    diagnosticCollection: vscode.DiagnosticCollection,
+    testOutputChannel: vscode.OutputChannel
 ): void {
     const scaffolder = new Scaffolder(logger);
     const typeGenerator = new TypeGenerator(logger);
     const schemaValidator = new SchemaValidator(logger);
-    const testRunner = new TestRunner(logger);
+    const testRunner = new TestRunner(logger, testOutputChannel);
     const testGenerator = new TestGenerator();
 
     const commands: Array<{ id: string; handler: () => Promise<void> }> = [
@@ -81,11 +84,11 @@ export function registerCommands(
                 const result = await schemaValidator.validateDocument(document);
 
                 if (result.valid) {
+                    diagnosticCollection.delete(document.uri);
                     vscode.window.showInformationMessage('Schema is valid');
                 } else {
                     const diagnostics = schemaValidator.createDiagnostics(document, result);
-                    const collection = vscode.languages.createDiagnosticCollection('mcp');
-                    collection.set(document.uri, diagnostics);
+                    diagnosticCollection.set(document.uri, diagnostics);
                     vscode.window.showErrorMessage(
                         `Schema has ${result.errors.length} error(s)`
                     );
@@ -201,10 +204,10 @@ export function registerCommands(
                     const toolsData = JSON.parse(Buffer.from(toolsContent).toString('utf-8'));
 
                     // Load config (optional)
-                    let configData = { name: 'mcp-server', version: '0.1.0' };
+                    let configData: MCPServerConfig = { name: 'mcp-server', version: '0.1.0' };
                     if (configFiles.length > 0) {
                         const configContent = await vscode.workspace.fs.readFile(configFiles[0]);
-                        configData = JSON.parse(Buffer.from(configContent).toString('utf-8'));
+                        configData = JSON.parse(Buffer.from(configContent).toString('utf-8')) as MCPServerConfig;
                     }
 
                     // Generate tests from tool definitions
