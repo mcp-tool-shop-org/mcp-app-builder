@@ -185,4 +185,4 @@ npm test
 
 ---
 
-यह एप्लिकेशन MCP ऐप बिल्डर का उपयोग करके बनाया गया है।
+<a href="https://mcp-tool-shop.github.io/">MCP Tool Shop</a> द्वारा निर्मित

@@ -189,4 +189,4 @@ npm test
 
 ---
 
-MCP App Builderで構築されました。
+<a href="https://mcp-tool-shop.github.io/">MCP Tool Shop</a> 製

@@ -185,4 +185,4 @@ npm test
 
 ---
 
-使用 MCP 应用构建器构建。
+由 <a href="https://mcp-tool-shop.github.io/">MCP Tool Shop</a> 构建

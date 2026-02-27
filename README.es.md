@@ -191,4 +191,4 @@ MIT.
 
 ---
 
-Construido con MCP App Builder.
+Creado por <a href="https://mcp-tool-shop.github.io/">MCP Tool Shop</a>

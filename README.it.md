@@ -198,4 +198,4 @@ MIT.
 
 ---
 
-Realizzato con MCP App Builder.
+Realizzato da <a href="https://mcp-tool-shop.github.io/">MCP Tool Shop</a>
