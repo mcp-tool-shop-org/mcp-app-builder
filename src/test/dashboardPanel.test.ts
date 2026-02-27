@@ -44,6 +44,12 @@ vi.mock('vscode', () => ({
 import { DashboardPanel } from '../webview/DashboardPanel';
 import * as vscode from 'vscode';
 
+type MessageHandler = (message: { type: string; payload?: unknown }) => void;
+
+function getMessageHandler(): MessageHandler {
+    return mockWebview.onDidReceiveMessage.mock.calls[0][0] as MessageHandler;
+}
+
 const mockLogger = {
     debug: vi.fn(),
     info: vi.fn(),
@@ -103,42 +109,42 @@ describe('DashboardPanel', () => {
     it('handles newServer message', () => {
         DashboardPanel.createOrShow(extensionUri, mockLogger as never);
         // Get the message handler
-        const handler = mockWebview.onDidReceiveMessage.mock.calls[0][0];
+        const handler = getMessageHandler();
         handler({ type: 'newServer' });
         expect(vscode.commands.executeCommand).toHaveBeenCalledWith('mcp-app-builder.newServer');
     });
 
     it('handles validateSchema message', () => {
         DashboardPanel.createOrShow(extensionUri, mockLogger as never);
-        const handler = mockWebview.onDidReceiveMessage.mock.calls[0][0];
+        const handler = getMessageHandler();
         handler({ type: 'validateSchema' });
         expect(vscode.commands.executeCommand).toHaveBeenCalledWith('mcp-app-builder.validateSchema');
     });
 
     it('handles generateTypes message', () => {
         DashboardPanel.createOrShow(extensionUri, mockLogger as never);
-        const handler = mockWebview.onDidReceiveMessage.mock.calls[0][0];
+        const handler = getMessageHandler();
         handler({ type: 'generateTypes' });
         expect(vscode.commands.executeCommand).toHaveBeenCalledWith('mcp-app-builder.generateTypes');
     });
 
     it('handles testServer message', () => {
         DashboardPanel.createOrShow(extensionUri, mockLogger as never);
-        const handler = mockWebview.onDidReceiveMessage.mock.calls[0][0];
+        const handler = getMessageHandler();
         handler({ type: 'testServer' });
         expect(vscode.commands.executeCommand).toHaveBeenCalledWith('mcp-app-builder.testServer');
     });
 
     it('logs warning for unknown message type', () => {
         DashboardPanel.createOrShow(extensionUri, mockLogger as never);
-        const handler = mockWebview.onDidReceiveMessage.mock.calls[0][0];
+        const handler = getMessageHandler();
         handler({ type: 'unknown-type' });
         expect(mockLogger.warn).toHaveBeenCalledWith(expect.stringContaining('Unknown message type'));
     });
 
     it('handles refresh message by updating HTML', () => {
         DashboardPanel.createOrShow(extensionUri, mockLogger as never);
-        const handler = mockWebview.onDidReceiveMessage.mock.calls[0][0];
+        const handler = getMessageHandler();
         mockWebview.html = ''; // clear
         handler({ type: 'refresh' });
         expect(mockWebview.html).toContain('<!DOCTYPE html>');

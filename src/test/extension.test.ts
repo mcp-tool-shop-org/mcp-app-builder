@@ -114,24 +114,24 @@ describe('Extension', () => {
     });
 
     it('activates without error', async () => {
-        const { activate } = await import('../extension');
+        const { activate } = await import('../extension.js');
         await expect(activate(context as never)).resolves.not.toThrow();
     });
 
     it('creates output channel on activation', async () => {
-        const { activate } = await import('../extension');
+        const { activate } = await import('../extension.js');
         await activate(context as never);
         expect(vscode.window.createOutputChannel).toHaveBeenCalledWith('MCP App Builder');
     });
 
     it('registers 5 commands', async () => {
-        const { activate } = await import('../extension');
+        const { activate } = await import('../extension.js');
         await activate(context as never);
         expect(vscode.commands.registerCommand).toHaveBeenCalledTimes(5);
     });
 
     it('registers expected command IDs', async () => {
-        const { activate } = await import('../extension');
+        const { activate } = await import('../extension.js');
         await activate(context as never);
         const registeredCommands = vi.mocked(vscode.commands.registerCommand).mock.calls.map(
             (c) => c[0]
@@ -144,13 +144,13 @@ describe('Extension', () => {
     });
 
     it('creates file system watcher for mcp.json', async () => {
-        const { activate } = await import('../extension');
+        const { activate } = await import('../extension.js');
         await activate(context as never);
         expect(vscode.workspace.createFileSystemWatcher).toHaveBeenCalledWith('**/mcp.json');
     });
 
     it('creates status bar item', async () => {
-        const { activate } = await import('../extension');
+        const { activate } = await import('../extension.js');
         await activate(context as never);
         expect(vscode.window.createStatusBarItem).toHaveBeenCalledWith(
             vscode.StatusBarAlignment.Right,
@@ -159,7 +159,7 @@ describe('Extension', () => {
     });
 
     it('pushes disposables to context.subscriptions', async () => {
-        const { activate } = await import('../extension');
+        const { activate } = await import('../extension.js');
         await activate(context as never);
         // Should have: diagnosticCollection, testOutputChannel, 5 commands,
         // workspace change listener, 3 file watcher events + watcher, save listener,
@@ -168,13 +168,13 @@ describe('Extension', () => {
     });
 
     it('deactivate runs without error', async () => {
-        const { activate, deactivate } = await import('../extension');
+        const { activate, deactivate } = await import('../extension.js');
         await activate(context as never);
         expect(() => deactivate()).not.toThrow();
     });
 
     it('getLogger returns logger after activation', async () => {
-        const { activate, getLogger } = await import('../extension');
+        const { activate, getLogger } = await import('../extension.js');
         await activate(context as never);
         const logger = getLogger();
         expect(logger).toBeDefined();

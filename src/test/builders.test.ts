@@ -8,6 +8,7 @@ import {
     emptyState,
     errorDisplay,
 } from '../ui-components/builders';
+import type { MCPUIComponent } from '../mcp/types';
 
 describe('UI Builders', () => {
     describe('searchResults', () => {
@@ -83,8 +84,9 @@ describe('UI Builders', () => {
                 metrics: [],
                 refreshTool: 'refreshData',
             });
-            expect(component.props?.actions).toHaveLength(1);
-            expect(component.props?.actions[0].props?.label).toBe('Refresh');
+            const actions = component.props?.actions as MCPUIComponent[];
+            expect(actions).toHaveLength(1);
+            expect(actions[0].props?.label).toBe('Refresh');
         });
 
         it('has no actions without refreshTool', () => {
@@ -267,8 +269,9 @@ describe('UI Builders', () => {
                 items: [],
                 refreshTool: 'checkHealth',
             });
-            expect(component.props?.actions).toHaveLength(1);
-            expect(component.props?.actions[0].props?.label).toBe('Check Now');
+            const actions = component.props?.actions as MCPUIComponent[];
+            expect(actions).toHaveLength(1);
+            expect(actions[0].props?.label).toBe('Check Now');
         });
     });
 
