@@ -8,12 +8,11 @@
 
 <p align="center">
   <a href="https://github.com/mcp-tool-shop-org/mcp-app-builder/actions/workflows/ci.yml"><img src="https://github.com/mcp-tool-shop-org/mcp-app-builder/actions/workflows/ci.yml/badge.svg" alt="CI" /></a>
+  <a href="https://codecov.io/gh/mcp-tool-shop-org/mcp-app-builder"><img src="https://codecov.io/gh/mcp-tool-shop-org/mcp-app-builder/branch/main/graph/badge.svg" alt="codecov" /></a>
   <img src="https://img.shields.io/badge/license-MIT-blue" alt="MIT License" />
   <a href="https://modelcontextprotocol.io"><img src="https://img.shields.io/badge/MCP-1.0-green" alt="MCP" /></a>
   <a href="https://mcp-tool-shop-org.github.io/mcp-app-builder/"><img src="https://img.shields.io/badge/Landing_Page-live-blue" alt="Landing Page" /></a>
 </p>
-
-# MCP App Builder
 
 > Build MCP servers with interactive UI components — from VS Code.
 
@@ -176,6 +175,14 @@ npm test
 ## Contributing
 
 Contributions are welcome! Please read our contributing guidelines (coming soon).
+
+## Security & Privacy
+
+**Data touched:** workspace files (mcp.json, mcp-tools.json, generated TypeScript), VS Code settings, extension output channels.
+
+**Data NOT touched:** source code beyond MCP configs, git history, network (except localhost test harness), credentials, environment variables. No telemetry is collected or sent.
+
+**Permissions:** filesystem read/write for scaffolding and type generation (workspace only), localhost network for test harness. See [SECURITY.md](SECURITY.md) for the full policy.
 
 ## License
 

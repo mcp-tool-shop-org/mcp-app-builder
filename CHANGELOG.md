@@ -5,6 +5,26 @@ All notable changes to MCP App Builder will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+- Structured error class (`AppBuilderError`) with code, message, hint, cause, retryable
+- SECURITY.md with vulnerability reporting policy
+- Threat model section in README (data touched, data NOT touched, permissions)
+- `verify` script in package.json (compile + lint + test + build)
+- Coverage reporting with `@vitest/coverage-v8` and Codecov
+- Dependency audit job in CI
+- VSIX packaging verification in CI
+- SHIP_GATE.md and SCORECARD.md for product standards tracking
+
+### Changed
+- Command error handler now surfaces structured error codes via VS Code notifications
+
+## [0.2.1] - 2026-02-27
+
+### Added
+- Publish workflow for automated VSIX packaging and Marketplace release
+
 ## [0.2.0] - 2026-02-26
 
 ### Changed
@@ -27,6 +47,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - 55 unit tests across 5 test files (schema validation, type generation, templates, test generator, UI primitives)
 - CI now runs tests alongside compile and lint
 - `MCPTransportConfig` extended with `command` and `args` fields for stdio servers
+
+## [0.1.1] - 2026-02-23
+
+### Added
+- **Keyboard shortcuts** — `Ctrl+Alt+N` for New Server, `Ctrl+Alt+V` for Validate Schema
+- **Auto-validate on save** — schemas validated automatically when saving `mcp.json` or `mcp-tools.json` (controlled by `autoValidate` setting)
+- Extension icon and marketplace metadata (homepage, bugs URL)
+- CI workflow (paths-gated, TypeScript compile + ESLint)
+- GitHub Pages landing page
+- `.vscodeignore` for lean VSIX packaging
 
 ## [0.1.0] - 2026-02-02
 
@@ -73,20 +103,3 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - TypeScript configuration
 - MCP SDK integration
 - Comprehensive type definitions
-
-## [Unreleased]
-
-## [0.1.3] - 2026-02-27
-
-### Added
-- Publish workflow for automated VSIX packaging and Marketplace release
-
-## [0.1.1] - 2026-02-23
-
-### Added
-- **Keyboard shortcuts** — `Ctrl+Alt+N` for New Server, `Ctrl+Alt+V` for Validate Schema
-- **Auto-validate on save** — schemas validated automatically when saving `mcp.json` or `mcp-tools.json` (controlled by `autoValidate` setting)
-- Extension icon and marketplace metadata (homepage, bugs URL)
-- CI workflow (paths-gated, TypeScript compile + ESLint)
-- GitHub Pages landing page
-- `.vscodeignore` for lean VSIX packaging

@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 import { OutputChannelLogger } from '../utils/logger';
+import { AppBuilderError } from '../utils/errors';
 import { Scaffolder } from '../scaffolding';
 import { TypeGenerator } from '../codegen';
 import { SchemaValidator } from '../validation';
@@ -259,10 +260,18 @@ export function registerCommands(
             try {
                 await handler();
             } catch (error) {
-                logger.error(`Command ${id} failed`, error);
-                vscode.window.showErrorMessage(
-                    `MCP App Builder: Command failed. See output for details.`
-                );
+                if (error instanceof AppBuilderError) {
+                    logger.error(`Command ${id} failed [${error.code}]`, error);
+                    const msg = error.hint
+                        ? `MCP App Builder [${error.code}]: ${error.message} — ${error.hint}`
+                        : `MCP App Builder [${error.code}]: ${error.message}`;
+                    vscode.window.showErrorMessage(msg);
+                } else {
+                    logger.error(`Command ${id} failed`, error);
+                    vscode.window.showErrorMessage(
+                        `MCP App Builder: Command failed. See output for details.`
+                    );
+                }
             }
         });
         context.subscriptions.push(disposable);
