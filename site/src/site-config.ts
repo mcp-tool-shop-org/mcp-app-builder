@@ -14,7 +14,7 @@ export const config: SiteConfig = {
     headlineAccent: 'from VS Code.',
     description: 'Scaffold, validate, test, and deploy MCP servers with interactive UI components — all from your editor.',
     primaryCta: { href: '#quick-start', label: 'Get started' },
-    secondaryCta: { href: '#features', label: 'See features' },
+    secondaryCta: { href: 'handbook/', label: 'Read the Handbook' },
     previews: [
       { label: 'Create', code: 'Cmd+Shift+P → "MCP: New Server"' },
       { label: 'Validate', code: 'Cmd+Shift+P → "MCP: Validate Schema"' },
